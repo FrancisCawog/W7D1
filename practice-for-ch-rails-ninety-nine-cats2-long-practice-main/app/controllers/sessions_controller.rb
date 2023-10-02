@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+    before_action :require_logged_out, only: [:new, :create]
+    before_action :require_logged_in, only: [:destroy]
+
     def new
         @user = User.new
         render :new
@@ -11,7 +14,8 @@ class SessionsController < ApplicationController
             login(@user)
             redirect_to cats_url
         else
-            @user = {username: params[:user][:username]}
+            # @user = {username: params[:user][:username]}
+            @user = User.new(username: params[:user][:username])
             render :new
         end
     end
