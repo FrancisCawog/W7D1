@@ -10,7 +10,7 @@
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
-    before_validation: ensure_session_token
+    before_validation :ensure_session_token
 
     validates :username, :session_token, uniqueness: true, presence: true
     validates :password_digest, presence: true
@@ -43,7 +43,7 @@ class User < ApplicationRecord
         self.session_token ||= self.generate_session_token
     end
 
-    def reset_session_token
+    def reset_session_token!
         self.session_token ||= self.generate_session_token
         self.save!
         self.session_token
